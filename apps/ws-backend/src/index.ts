@@ -5,7 +5,8 @@ const wss = new WebSocketServer({ port: 8080 });
 
 wss.on("connection", function connection(ws) {
   const user: User = { name: "Rahul", password: "234" };
-  console.log(greeting(user));
+  const greet=greeting(user)
 
-  ws.send("something");
+  console.log("Web seocket Server is running on 8080");
+  ws.send(greet);
 });

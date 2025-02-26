@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "exports": {
-    "./greeting": {
-      "types": "./src/index.ts",
-      "default": "./dist/index.js"
+    ".": {
+      "types": "./src/index.ts"
     }
   },
   "scripts": {

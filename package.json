@@ -1,5 +1,5 @@
 {
-  "name": "SketchFlow",
+  "name": "sketchflow",
   "private": true,
   "scripts": {
     "build": "turbo run build",

@@ -1,23 +1,26 @@
 {
-  "name": "http-backend",
+  "name": "@repo/backend-common",
   "version": "1.0.0",
   "main": "index.js",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts"
+    }
+  },
   "scripts": {
     "build": "tsc -b",
-    "start": " node dist/index.js",
+    "start": "node dist/index.js",
     "dev": "pnpm run build && pnpm run start"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
     "@repo/common": "workspace:*",
-    "@repo/backend-common":"workspace:*"
+    "@repo/typescript-config": "workspace:*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@types/express": "^5.0.0",
-    "express": "^4.21.2"
+    "@types/node": "^22.13.5"
   }
 }
