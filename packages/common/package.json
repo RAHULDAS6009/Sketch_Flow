@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "exports": {
-    ".": {
-      "types": "./src/index.ts"
-    }
+    "./types": "./src/index.ts"
   },
   "scripts": {
     "build": "tsc -b",
@@ -18,5 +16,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "zod": "^3.24.2"
+  }
 }

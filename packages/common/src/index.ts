@@ -1,8 +1,17 @@
- export interface User {
-  name: string;
-  password: string;
-}
+ import {z} from "zod";
+ export const createUserSchema=z.object({
+  username:z.string().min(3).max(20),
+  password:z.string(),
+  name:z.string()
+ })
 
-export function greeting(user: User) {
-  return "Hello " + user.name;
-}
+export const SigninSchema=z.object({
+  username:z.string().min(3).max(20),
+  password:z.string()
+})
+
+export const CreateRoomSchema=z.object({
+  rootName:z.string().min(3).max(20)
+})
+
+
