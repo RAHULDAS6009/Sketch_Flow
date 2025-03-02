@@ -8,15 +8,18 @@
     "dev": "pnpm run build && pnpm run start"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@repo/common":"workspace:*"
+    "@repo/common": "workspace:*",
+    "@repo/backend-common": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/ws": "^8.5.14",
+    "jsonwebtoken": "^9.0.2",
     "ws": "^8.18.0"
   }
 }
