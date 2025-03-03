@@ -14,16 +14,30 @@ datasource db {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  username   String   @unique
-  name    String?
-  draw   Draw[]
+  id       String @id @default(uuid())
+  password String 
+  email    String @unique
+  name     String
+  photo    String?
+  rooms    Room[]
+  chat     Chat[]
+} 
+
+model Room{
+  id        Int      @id @default(autoincrement())
+  slug      String
+  createdAt DateTime @default(now())
+  adminId   String
+  admin     User    @relation(fields:[adminId],references:[id])
+  chat      Chat[]
 }
 
-model Draw {
-  id      Int      @id @default(autoincrement())
-  shape   String
-  user    User        @relation(fields:[userId],references:[id])
-  userId  Int
+model Chat {
+  id      Int    @id @default(autoincrement())
+  message String
+  userId  String
+  user    User   @relation(fields:[userId],references:[id])
+  roomId  Int    
+  room    Room   @relation(fields:[roomId],references:[id])
 }
 

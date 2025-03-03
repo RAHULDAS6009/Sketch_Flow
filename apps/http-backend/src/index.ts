@@ -7,10 +7,11 @@ import {
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "@repo/backend-common/types";
 import { middleware } from "./middleware";
+import { prismaClient } from "@repo/db/client";
 const app = express();
 app.use(express.json());
 
-app.post("/signup", (req: Request, res: Response) => {
+app.post("/signup", async (req: Request, res: Response) => {
   const data = createUserSchema.safeParse(req.body);
 
   const secret = jwt_secret;
@@ -22,6 +23,14 @@ app.post("/signup", (req: Request, res: Response) => {
     });
     return;
   }
+
+  const newUser = await prismaClient.user.create({
+    data: {
+      email: req.body.username,
+      password: req.body.password,
+      name: req.body.name,
+    },
+  });
 
   res.json({
     userId: "123",
