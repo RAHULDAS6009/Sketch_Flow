@@ -1,1 +1,2 @@
-export const jwt_secret=process.env.JWT_SECRET || "1245780";
+ export const jwt_secret=process.env.JWT_SECRET || "1245780";
+ 
