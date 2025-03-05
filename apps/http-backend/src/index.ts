@@ -24,48 +24,96 @@ app.post("/signup", async (req: Request, res: Response) => {
     return;
   }
 
-  const newUser = await prismaClient.user.create({
-    data: {
-      email: req.body.username,
-      password: req.body.password,
-      name: req.body.name,
-    },
-  });
+  try {
+    const newUser = await prismaClient.user.create({
+      //TODO: hash the password
+      data: {
+        email: req.body.username,
+        password: req.body.password,
+        name: req.body.name,
+      },
+    });
 
-  res.json({
-    userId: "123",
-    secret,
-  });
+    res.json({
+      userId: newUser.id,
+      message: "User created Successfully",
+    });
+  } catch (error) {
+    res.status(411).json({
+      message: "Something went wrong/user already",
+    });
+  }
 });
 
-app.post("/signin", (req: Request, res: Response) => {
-  const data = SigninSchema.safeParse(req.body);
-  if (!data.success) {
+app.post("/signin", async (req: Request, res: Response) => {
+  const parsedData = SigninSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    res.json({
+      message: "Incorrect Inputs",
+    });
+    return;
+  }
+  try {
+    // TODO: Compare the hash Password
+    const user = await prismaClient.user.findFirst({
+      where: {
+        email: parsedData.data.username,
+        password: parsedData.data.password,
+      },
+    });
+
+    if (!user) {
+      res.status(403).json({
+        message: "Not Authorized",
+      });
+      return;
+    }
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+      },
+      jwt_secret
+    );
+
+    res.json({
+      token,
+    });
+  } catch (error) {
+    console.log("what is the erro", error);
+    res.json({
+      message: "Something went wrong",
+    });
+  }
+});
+
+app.post("/room", middleware, async (req: Request, res: Response) => {
+  const parsedData = CreateRoomSchema.safeParse(req.body);
+  if (!parsedData.success) {
     res.json({
       message: "Incorrect Inputs",
     });
     return;
   }
 
-  const userId = 1;
-  const token = jwt.sign({ userId }, jwt_secret);
-
-  res.json({
-    token,
-  });
-});
-app.post("/room", middleware, (req: Request, res: Response) => {
-  const data = CreateRoomSchema.safeParse(req.body);
-  if (!data.success) {
-    res.json({
-      message: "Incorrect Inputs",
+  try {
+    const room = await prismaClient.room.create({
+      data: {
+        slug: parsedData.data.name,
+        adminId: req.userId,
+      },
     });
-    return;
-  }
 
-  res.json({
-    roomId: 123,
-  });
+
+    res.json({
+      room: room.id,
+      message: "Room created successfully",
+    });
+  } catch (error) {
+    res.json({
+      message: "Something went wrong/Room already exsist",
+    });
+  }
 });
 
 app.listen(5000, () => {
