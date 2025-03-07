@@ -12,6 +12,7 @@ const app = express();
 app.use(express.json());
 
 app.post("/signup", async (req: Request, res: Response) => {
+  // TODO:try to give wrong inputs format and recreate the try catch thing
   const data = createUserSchema.safeParse(req.body);
 
   const secret = jwt_secret;
@@ -46,6 +47,8 @@ app.post("/signup", async (req: Request, res: Response) => {
 });
 
 app.post("/signin", async (req: Request, res: Response) => {
+  // TODO:try to give wrong inputs format and recreate the try catch thing
+
   const parsedData = SigninSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.json({
@@ -88,6 +91,8 @@ app.post("/signin", async (req: Request, res: Response) => {
 });
 
 app.post("/room", middleware, async (req: Request, res: Response) => {
+  // TODO:try to give wrong inputs format and recreate the try catch thing
+
   const parsedData = CreateRoomSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.json({
