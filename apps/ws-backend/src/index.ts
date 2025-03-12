@@ -1,6 +1,7 @@
 import { WebSocket, WebSocketServer } from "ws";
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "@repo/backend-common/types";
+import { prismaClient } from "@repo/db/client";
 
 const wss = new WebSocketServer({ port: 8080 });
 
@@ -54,16 +55,15 @@ wss.on("connection", function connection(ws: WebSocket, request) {
     ws,
   });
 
-  
-    ws.on("message", (data) => {
-      try {
-        const parsedData = JSON.parse(data as unknown as string);
+  ws.on("message", async (data) => {
+    try {
+      const parsedData = JSON.parse(data as unknown as string);
       if (parsedData.type === "join_room") {
         const user = users.find((x) => x.ws === ws);
         // TODO:Does this room exsist
         // TODO:is this user have access to join this room
         // TODO:feature limit like 10 users in the room
-        
+
         user?.rooms.push(parsedData.roomId);
       }
 
@@ -74,9 +74,9 @@ wss.on("connection", function connection(ws: WebSocket, request) {
       }
       if (parsedData.type === "chat") {
         const user = users.find((x) => x.ws === ws);
-        
+
         const roomId = parsedData.roomId;
-        if(!user?.rooms.includes(roomId)){
+        if (!user?.rooms.includes(roomId)) {
           return;
         }
         //TODO:message checker
@@ -88,16 +88,16 @@ wss.on("connection", function connection(ws: WebSocket, request) {
               JSON.stringify({
                 type: "chat",
                 message: message,
-                roomId
+                roomId,
               })
             );
           }
         });
+
+        await prismaClient.chat.create({
+          data: { roomId, message, userId },
+        });
       }
-      } catch (error) {
-        
-      }
-      
-    });
-  
+    } catch (error) {}
+  });
 });

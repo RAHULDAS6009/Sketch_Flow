@@ -109,16 +109,36 @@ app.post("/room", middleware, async (req: Request, res: Response) => {
       },
     });
 
-
     res.json({
       room: room.id,
       message: "Room created successfully",
     });
   } catch (error) {
     res.json({
-      message: "Something went wrong/Room already exsist",
+      message: "Room already exsist",
     });
   }
+});
+
+app.get("/chats/:roomId", middleware, async (req: Request, res: Response) => {
+  const roomId = Number(req.params.roomId);
+  const chats = await prismaClient.chat.findMany({
+    where: {
+      roomId: roomId,
+    },
+    select: {
+      id:true,
+      message: true,
+    },
+    orderBy: {
+      id: "asc",
+    },
+    take: 50,
+  });
+
+  res.json({
+    chats
+  })
 });
 
 app.listen(5000, () => {

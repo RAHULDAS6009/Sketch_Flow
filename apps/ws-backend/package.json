@@ -8,6 +8,7 @@
     "dev": "pnpm run build && pnpm run start"
   },
   "devDependencies": {
+    "@repo/db":"workspace:*",
     "@repo/common": "workspace:*",
     "@repo/backend-common": "workspace:*",
     "@repo/typescript-config": "workspace:*"
