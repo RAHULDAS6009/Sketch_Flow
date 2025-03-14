@@ -8,14 +8,17 @@ import jwt from "jsonwebtoken";
 import { jwt_secret } from "@repo/backend-common/types";
 import { middleware } from "./middleware";
 import { prismaClient } from "@repo/db/client";
+import cors from "cors";
 const app = express();
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post("/signup", async (req: Request, res: Response) => {
   // TODO:try to give wrong inputs format and recreate the try catch thing
   const data = createUserSchema.safeParse(req.body);
-
-  const secret = jwt_secret;
 
   if (!data.success) {
     res.json({
@@ -127,7 +130,7 @@ app.get("/chats/:roomId", middleware, async (req: Request, res: Response) => {
       roomId: roomId,
     },
     select: {
-      id:true,
+      id: true,
       message: true,
     },
     orderBy: {
@@ -137,8 +140,8 @@ app.get("/chats/:roomId", middleware, async (req: Request, res: Response) => {
   });
 
   res.json({
-    chats
-  })
+    chats,
+  });
 });
 
 app.listen(5000, () => {
