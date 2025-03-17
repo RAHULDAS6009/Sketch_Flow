@@ -83,6 +83,9 @@ wss.on("connection", function connection(ws: WebSocket, request) {
         //TODO:message checker
         // TODO:auth of sending messages to room (Only certain people join certain room)
         const message = parsedData.message;
+        await prismaClient.chat.create({
+          data: { roomId, message, userId },
+        });
         users.forEach((user) => {
           if (user.rooms.includes(roomId)) {
             user.ws.send(
@@ -95,9 +98,6 @@ wss.on("connection", function connection(ws: WebSocket, request) {
           }
         });
 
-        await prismaClient.chat.create({
-          data: { roomId, message, userId },
-        });
       }
     } catch (error) {
       console.log(error);
