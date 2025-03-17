@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 
 // TODO:signup with nextAuth provider like google,github,discord
@@ -9,6 +9,7 @@ import { useState } from "react";
 const Page = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const route=useRouter()
 
   async function onClick() {
     // TODO:use zod thing into this
@@ -20,7 +21,11 @@ const Page = () => {
         username,
         password,
       });
+      console.log(response.data.token)
       localStorage.setItem("token", response.data.token);
+
+      route.push("/")
+      
     } catch (error) {
       // TODO:pass the error message in the frontend
       console.log(" Here is the error :", error);

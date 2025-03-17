@@ -58,6 +58,7 @@ wss.on("connection", function connection(ws: WebSocket, request) {
   ws.on("message", async (data) => {
     try {
       const parsedData = JSON.parse(data as unknown as string);
+      console.log(parsedData);
       if (parsedData.type === "join_room") {
         const user = users.find((x) => x.ws === ws);
         // TODO:Does this room exsist
@@ -98,6 +99,8 @@ wss.on("connection", function connection(ws: WebSocket, request) {
           data: { roomId, message, userId },
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   });
 });

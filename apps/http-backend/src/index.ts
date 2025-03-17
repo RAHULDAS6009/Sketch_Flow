@@ -11,7 +11,7 @@ import { prismaClient } from "@repo/db/client";
 import cors from "cors";
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:3001",
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -123,7 +123,7 @@ app.post("/room", middleware, async (req: Request, res: Response) => {
   }
 });
 
-app.get("/chats/:roomId", middleware, async (req: Request, res: Response) => {
+app.get("/chats/:roomId", async (req: Request, res: Response) => {
   const roomId = Number(req.params.roomId);
   const chats = await prismaClient.chat.findMany({
     where: {
@@ -141,6 +141,19 @@ app.get("/chats/:roomId", middleware, async (req: Request, res: Response) => {
 
   res.json({
     chats,
+  });
+});
+
+app.get("/room/:slug", async (req: Request, res: Response) => {
+  const slug = req.params.slug;
+  const room = await prismaClient.room.findFirst({
+    where: {
+      slug,
+    },
+  });
+
+  res.json({
+    room,
   });
 });
 

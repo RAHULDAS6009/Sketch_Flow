@@ -1,48 +1,32 @@
 "use client";
-import { redirect } from "next/navigation";
+
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [input, setInput] = useState<string>();
-  const [messages, setMessages] = useState<string[]>([]);
-  const [message, setMessage] = useState<string>();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      redirect("/signup");
-    }
-    const socket = new WebSocket(`ws://localhost:8080?token=${token}`);
-    socket.onopen = function (event) {
-      
-    };
-  }, []);
-  function onClick() {
-    if (input == undefined) return;
-    setMessages([...messages, input]);
-    setInput(" ");
-  }
+  const [roomId, setRoomId] = useState<string>("");
+  const router = useRouter();
+  // todo: if token exsist redirect to / url 
+   // TODO: try to do autosearch functionality to search specific room
   return (
-    <div className="w-screen h-screen bg-amber-200 flex items-center justify-center">
-      <div className="bg-white w-[50%] h-[50%]">
-        {messages.map((todo, index) => {
-          return <div key={index}>{todo}</div>;
-        })}
-      </div>
-      <div className="flex  items-center">
-        Type :{" "}
-        <input
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-          className="border"
-          type="text"
-        />{" "}
-        <button onClick={onClick} className="bg-slate-400 p-1 rounded-md">
-          send
-        </button>
-      </div>
+    <div className="w-screen h-screen flex justify-center items-center  ">
+      <input
+        className="border p-2 outline-none rounded-md"
+        type="text"
+        value={roomId}
+        
+        onChange={(e) => {
+          setRoomId(e.target.value);
+        }}
+      />
+      <button
+        onClick={() => {
+          router.push(`/room/${roomId}`);
+        }}
+        className="bg-gray-400 p-2 rounded-md"
+      >
+        send
+      </button>
     </div>
   );
 }
