@@ -1,0 +1,16 @@
+{
+  "name": "@repo/tailwind-config",
+  "version": "1.0.0",
+  "main": "index.js",
+  "exports": {
+    ".": "./tailwind.config.ts"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "tailwindcss": "^4.0.14"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

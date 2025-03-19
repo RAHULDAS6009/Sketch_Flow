@@ -8,7 +8,7 @@ interface InputProps {
 export const Input = ({ onChange, value,title }: InputProps) => {
   return (
     <div>
-      <span>{title}</span>
+      <span className="bg-amber-300 text-4xl">{title}</span>
       <input className="p-2 rounded-md outline-2 outline-offset-2 outline-violet-500" onChange={onChange} type="text" value={value} />;
     </div>
   );
