@@ -11,7 +11,7 @@ import { prismaClient } from "@repo/db/client";
 import cors from "cors";
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:3002",
+  origin: "http://localhost:3001",
 };
 app.use(cors(corsOptions));
 app.use(express.json());

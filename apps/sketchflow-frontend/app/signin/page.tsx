@@ -1,12 +1,9 @@
-import React, { FC } from "react";
+"use client";
+import React, { useState } from "react";
 import AuthLayout from "../../components/AuthLayout";
 function Signin() {
-  return (
-    <div>
-      Hello from signin
-      <AuthLayout isSignin={false} />
-    </div>
-  );
+  
+  return <AuthLayout isSignin={true} />;
 }
 
 export default Signin;

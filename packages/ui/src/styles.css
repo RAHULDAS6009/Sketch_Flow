@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+.bg-primary{
+     background-color: var(--color-violet-600);
+}
+
+.text-primary{
+    color:var(--color-violet-600);
+}
+

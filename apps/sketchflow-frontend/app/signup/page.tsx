@@ -1,6 +1,6 @@
-import { AuthLayout } from "../../components/AuthLayout";
+import AuthLayout from "../../components/AuthLayout";
 
- const Page = () => {
+const Page = () => {
   return <AuthLayout isSignin={false} />;
 };
 
