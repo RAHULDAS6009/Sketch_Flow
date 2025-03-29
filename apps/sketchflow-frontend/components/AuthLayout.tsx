@@ -5,7 +5,7 @@ import { Input } from "@repo/ui/input";
 import { Lock, Mail, User } from "lucide-react";
 import { Button } from "@repo/ui/button";
 import Link from "next/link";
-import { useAuth } from "../app/hooks/useAuth";
+// import { useAuth } from "../app/hooks/useAuth";
 import axios from "axios";
 import { http_url } from "../app/config";
 
@@ -26,7 +26,7 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
       });
 
       if (!userSchema.success) {
-        console.log("user not verified");
+        alert("user not verified");
         return;
       }
       async function callApi() {
