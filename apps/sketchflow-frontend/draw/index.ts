@@ -1,7 +1,7 @@
 import axios from "axios";
-import { http_url } from "../app/config";
+import { HTTP_URL } from "../config";
 
-type Shape =
+export type Shape =
   | {
       type: "rectangle";
       x: number;
@@ -108,11 +108,14 @@ export async function initDraw(
         context?.strokeRect(startX, startY, width, height);
       } else if (selectedTool == "circle") {
         console.log("hi from circle");
+        const centerX = startX + width / 2;
+        const centerY = startX + height / 2;
         const radius = Math.max(width, height) / 2;
         context.beginPath();
 
-        context.arc(startX + radius, startY + radius, radius, 0, 2 * Math.PI);
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         context.stroke();
+        context.closePath();
       }
     }
   });
@@ -132,7 +135,7 @@ function clearCanavs(
     if (shape.type == "rectangle") {
       context.strokeRect(shape.x, shape.y, shape.width, shape.height);
     } else if (shape.type == "circle") {
-      context.beginPath()
+      context.beginPath();
       context.arc(shape.centerX, shape.centerY, shape.radius, 0, 2 * Math.PI);
       context.stroke();
     }
@@ -140,7 +143,7 @@ function clearCanavs(
 }
 
 async function getExsisitingShapes(roomId: string) {
-  const res = await axios.get(`${http_url}/chats/${roomId}`);
+  const res = await axios.get(`${HTTP_URL}/chats/${roomId}`);
   const messages = res.data.chats;
 
   const shapes = messages.map((x: { message: string }) => {

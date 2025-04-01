@@ -13,9 +13,6 @@ async function main() {
           slug: "cohort-1",
         },
       },
-      // chat: {
-      //   create: [{ message: "Hi my name is alice! what's your", roomId: 1 }],
-      // }
     },
   });
   const bob = await prisma.user.upsert({
@@ -35,12 +32,6 @@ async function main() {
           },
         ],
       },
-      // chat: {
-      //   create: [
-      //     { message: "Hi my name is bob", roomId: 1 },
-      //     { message: "what are yu doing today", roomId: 2 },
-      //   ],
-      // },
     },
   });
   console.log({ alice, bob });

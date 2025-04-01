@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { initDraw } from "../draw";
 import { IconComponent } from "./Icon";
 import { Circle, Pen, RectangleHorizontal } from "lucide-react";
+import { Game } from "../draw/Game";
 
-type Shape = "circle" | "rectangle" | "pencil";
+export type Tool = "circle" | "rectangle" | "pencil";
 export const Canvas = ({
   roomId,
   socket,
@@ -14,18 +15,19 @@ export const Canvas = ({
 }) => {
   const canvasref = useRef<HTMLCanvasElement>(null);
   // TODO : make it shape to enum
-  const [selectedTool, setSelectedTool] = useState<Shape>("circle");
-  // WORST Way
-  // M-1 : localStorage.setItem("tool", selectedTool);
-  // M-2
+  const [selectedTool, setSelectedTool] = useState<Tool>("circle");
+  const [shape, setShape] = useState<Game>();
   useEffect(() => {
-    // @ts-ignore
-    window.selectedTool = selectedTool;
+    shape?.setSelectedTool(selectedTool);
   }, [selectedTool]);
 
   useEffect(() => {
     if (canvasref.current) {
-      initDraw(canvasref.current, roomId, socket);
+      const shape = new Game(canvasref.current, roomId, socket);
+      setShape(shape);
+      return () => {
+        shape.destroy();
+    }
     }
   }, [canvasref]);
 
@@ -46,8 +48,8 @@ export const TopBar = ({
   selectedTool,
   setSelectedTool,
 }: {
-  selectedTool: Shape;
-  setSelectedTool: (s: Shape) => void;
+  selectedTool: Tool;
+  setSelectedTool: (s: Tool) => void;
 }) => {
   return (
     <div className="fixed top-5 left-10 flex gap-5">
