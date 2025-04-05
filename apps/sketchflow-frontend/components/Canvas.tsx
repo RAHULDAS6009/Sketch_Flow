@@ -17,16 +17,17 @@ export const Canvas = ({
   // TODO : make it shape to enum
   const [selectedTool, setSelectedTool] = useState<Tool>("circle");
   const [shape, setShape] = useState<Game>();
+
   useEffect(() => {
-    shape?.setSelectedTool(selectedTool);
-  }, [selectedTool]);
+    shape?.setTool(selectedTool);
+  }, [selectedTool,shape]);
 
   useEffect(() => {
     if (canvasref.current) {
-      const shape = new Game(canvasref.current, roomId, socket);
-      setShape(shape);
+      const newshape = new Game(canvasref.current, roomId, socket);
+      setShape(newshape);
       return () => {
-        shape.destroy();
+        newshape.destroy();
     }
     }
   }, [canvasref]);

@@ -7,9 +7,9 @@ import { Button } from "@repo/ui/button";
 import Link from "next/link";
 // import { useAuth } from "../app/hooks/useAuth";
 import axios from "axios";
-import { http_url } from "../app/config";
 
 import { createUserSchema } from "@repo/common/types";
+import { HTTP_URL } from "../config";
 interface AuthLayoutProps {
   isSignin: boolean;
 }
@@ -30,7 +30,7 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
         return;
       }
       async function callApi() {
-        const response = await axios.post(`${http_url}/signup`, {
+        const response = await axios.post(`${HTTP_URL}/signup`, {
           username,
           password,
           name: fullname,
