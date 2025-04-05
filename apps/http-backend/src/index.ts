@@ -6,7 +6,7 @@ import {
 } from "@repo/common/types";
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "@repo/backend-common/types";
-import { middleware } from "./middleware";
+import middleware from "./middleware";
 import { prismaClient } from "@repo/db/client";
 import cors from "cors";
 const app = express();

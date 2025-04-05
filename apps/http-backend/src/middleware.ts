@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { jwt_secret } from "@repo/backend-common/types";
 
-export const middleware = (req: Request, res: Response, next: NextFunction) => {
+ const middleware = (req: Request, res: Response, next: NextFunction) => {
   // TODO:cookie authentication
   // TODO:solve it with Bearer
   try {
@@ -20,3 +20,5 @@ export const middleware = (req: Request, res: Response, next: NextFunction) => {
     });
   }
 };
+
+export default middleware;
