@@ -80,7 +80,7 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button onClick={onClick}>
+          <Button variant="Primary" onClick={onClick}>
             {isSignin ? "Sign in  " : "Create an account"}
           </Button>
           <span className="w-full text-center">

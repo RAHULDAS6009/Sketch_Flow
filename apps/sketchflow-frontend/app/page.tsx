@@ -1,18 +1,11 @@
-"use client";
-import { Button } from "@repo/ui/button";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import NavBar from "../components/landingPage/NavBar";
 
 export default function Home() {
-  
-  
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="flex w-48 gap-5">
-        <Button>
-          <Link href={"/signin"}>Sign in</Link>
-        </Button>
-        <Button onClick={() => redirect("/signup")}>Sign up</Button>
+    <div className=" ">
+      <div className="w-full border-b-2  border-gray-200">
+
+      <NavBar />
       </div>
     </div>
   );
