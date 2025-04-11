@@ -6,13 +6,13 @@ const links = ["Features", "How it Works", "Testimonials"];
 
 const NavBar = () => {
   return (
-    <div className=" flex justify-between items-baseline  py-4   mx-auto max-w-7xl">
+    <div className=" flex justify-between items-center  py-4   mx-2 md:mx-auto  max-w-7xl ">
       <Pallete /> 
 
-      <div className="flex gap-5 text-sm font-medium">
+      <div className="flex gap-5 text-sm font-medium  ">
         {links.map((item, index) => {
           return (
-            <a href="" key={index}>
+            <a href="" className="hidden md:block" key={index}>
               {item}
             </a>
           );

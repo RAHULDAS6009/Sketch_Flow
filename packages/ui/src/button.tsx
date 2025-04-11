@@ -3,7 +3,7 @@
 import { ChangeEvent, ReactNode } from "react";
 
 interface ButtonProps {
-  variant: "Primary" | "Secondary" | "Outlined";
+  variant: "Primary" | "Secondary" | "Outlined"|"none";
   onClick?: (e: ChangeEvent<HTMLButtonElement> | React.MouseEvent) => void;
   children?: ReactNode;
   className?: string;
@@ -13,7 +13,8 @@ interface ButtonProps {
 const variants={
   "Primary":" text-white hover:bg-violet-300 bg-primary ",
   "Secondary":"",
-  "Outlined":"border-1 border-violet-500 hover:bg-primary"
+  "Outlined":"border-1 border-violet-500 hover:bg-primary",
+  "none":""
 }
 
 export const Button = ({
