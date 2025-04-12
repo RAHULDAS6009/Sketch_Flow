@@ -6,7 +6,7 @@ const links = ["Features", "How it Works", "Testimonials"];
 
 const NavBar = () => {
   return (
-    <div className=" flex justify-between items-center  py-4   mx-2 md:mx-auto  max-w-7xl ">
+    <div className=" flex justify-between items-center  py-4   mx-auto  max-w-7xl ">
       <Pallete /> 
 
       <div className="flex gap-5 text-sm font-medium  ">
@@ -20,10 +20,10 @@ const NavBar = () => {
       </div>
 
       <div className="flex gap-2  w-[200px]">
-        <Button className=" bg-white" variant="Primary">
+        <Button size="small" className=" bg-white" variant="Primary">
           <Link href={"/signin"}>Sign in</Link>
         </Button>
-        <Button variant="Outlined" >
+        <Button size="small" variant="Outlined" >
           <Link href={"/signup"}>Sign up</Link>
         </Button>
       </div>

@@ -17,6 +17,9 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
   const [fullname, setFullName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+
+  // TODO:Input Validation
   async function onClick() {
     try {
       const userSchema = createUserSchema.safeParse({
@@ -30,7 +33,7 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
         return;
       }
       async function callApi() {
-        const response = await axios.post(`${HTTP_URL}/signup`, {
+        const response = await axios.post(`${HTTP_URL}/${isSignin?"signin":"signup"}`, {
           username,
           password,
           name: fullname,
@@ -49,8 +52,7 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-violet-100 ">
       <form
-        className="w-2/7 flex flex-col gap-5 bg-white   rounded-md drop-shadow-2xl p-4"
-        action=""
+        className=" md:w-96 flex flex-col gap-5 bg-white   rounded-md drop-shadow-2xl p-4"
       >
         <div className="flex flex-col gap-5 ">
           <Pallete />
@@ -80,7 +82,7 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button variant="Primary" onClick={onClick}>
+          <Button size="small" variant="Primary" onClick={onClick}>
             {isSignin ? "Sign in  " : "Create an account"}
           </Button>
           <span className="w-full text-center">
