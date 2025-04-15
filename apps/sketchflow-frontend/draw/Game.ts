@@ -98,9 +98,10 @@ export class Game {
       const radius = Math.max(width, height) / 2;
       shape = {
         type: "circle",
-        radius: radius,
         centerX: this.startX + radius,
         centerY: this.startY + radius,
+        radiusX: width,
+        radiusY: height,
       };
     } else if (this.selectedTool === "pencil") {
       this.pencilPositions.push({ x: this.startX, y: this.startY });
@@ -133,13 +134,23 @@ export class Game {
 
       this.context.strokeStyle = "rgba(255,255,255)";
       if (this.selectedTool == "rectangle") {
+        this.clearCanvas()
         this.context?.strokeRect(this.startX, this.startY, width, height);
       } else if (this.selectedTool == "circle") {
+        this.clearCanvas()
         const centerX = this.startX + width / 2;
         const centerY = this.startX + height / 2;
-        const radius = Math.max(width, height) / 2;
+        // const radius = Math.max(width, height) / 2;
         this.context.beginPath();
-        this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        this.context.ellipse(
+          centerX,
+          centerY,
+          width,
+          height,
+          0,
+          0,
+          2 * Math.PI
+        );
         this.context.stroke();
         this.context.closePath();
       } else if (this.selectedTool === "pencil") {
@@ -169,10 +180,12 @@ export class Game {
         this.context.strokeRect(shape.x, shape.y, shape.width, shape.height);
       } else if (shape.type == "circle") {
         this.context.beginPath();
-        this.context.arc(
+        this.context.ellipse(
           shape.centerX,
           shape.centerY,
-          shape.radius,
+          shape.radiusX,
+          shape.centerY,
+          0,
           0,
           2 * Math.PI
         );
