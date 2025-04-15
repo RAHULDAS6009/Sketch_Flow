@@ -14,10 +14,15 @@ export type Shape =
       centerX: number;
       centerY: number;
       radiusX: number;
-      radiusY:number
-    } | {
-      type:"pencil";
-      positions:{x:number,y:number}[]
+      radiusY: number;
+    }
+  | {
+      type: "pencil";
+      positions: { x: number; y: number }[];
+    }
+  | {
+      type: "diamond";
+      positions: { x: number; y: number }[];
     };
 
 // export async function initDraw(

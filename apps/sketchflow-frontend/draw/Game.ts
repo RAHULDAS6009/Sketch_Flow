@@ -9,6 +9,7 @@ export class Game {
   private startX: number = 0;
   private startY: number = 0;
   private pencilPositions: { x: number; y: number }[] = [];
+  private diamondPositions: { x: number; y: number }[] = [];
   private selectedTool: Tool = "circle";
   private clicked: boolean;
   private existingShapes: Shape[];
@@ -16,9 +17,6 @@ export class Game {
 
   constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
     this.canvas = canvas;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
     this.context = canvas.getContext("2d")!; //assume it is not null
     this.existingShapes = [];
@@ -104,11 +102,14 @@ export class Game {
         radiusY: height,
       };
     } else if (this.selectedTool === "pencil") {
-      this.pencilPositions.push({ x: this.startX, y: this.startY });
-
       shape = {
         type: "pencil",
         positions: this.pencilPositions,
+      };
+    } else if (this.selectedTool === "diamond") {
+      shape = {
+        type: "diamond",
+        positions: this.diamondPositions,
       };
     }
 
@@ -134,10 +135,10 @@ export class Game {
 
       this.context.strokeStyle = "rgba(255,255,255)";
       if (this.selectedTool == "rectangle") {
-        this.clearCanvas()
+        this.clearCanvas();
         this.context?.strokeRect(this.startX, this.startY, width, height);
       } else if (this.selectedTool == "circle") {
-        this.clearCanvas()
+        this.clearCanvas();
         const centerX = this.startX + width / 2;
         const centerY = this.startX + height / 2;
         // const radius = Math.max(width, height) / 2;
@@ -165,6 +166,43 @@ export class Game {
 
         this.startX = e.offsetX;
         this.startY = e.offsetY;
+      } else if (this.selectedTool === "diamond") {
+        this.clearCanvas();
+        this.context.beginPath();
+        this.diamondPositions = [];
+
+        this.context.moveTo(this.startX + width / 2, this.startY);
+        this.diamondPositions.push({
+          x: this.startX + width / 2,
+          y: this.startY,
+        });
+
+        this.context.lineTo(this.startX + width, this.startY + height / 2);
+        this.diamondPositions.push({
+          x: this.startX + width,
+          y: this.startY + height / 2,
+        });
+
+        this.context.lineTo(this.startX + width / 2, this.startY + height);
+        this.diamondPositions.push({
+          x: this.startX + width / 2,
+          y: this.startY + height,
+        });
+
+        this.context.lineTo(this.startX, this.startY + height / 2);
+        this.diamondPositions.push({
+          x: this.startX,
+          y: this.startY + height / 2,
+        });
+
+        this.context.lineTo(this.startX + width / 2, this.startY);
+        this.diamondPositions.push({
+          x: this.startX + width / 2,
+          y: this.startY,
+        });
+
+        this.context.stroke();
+        this.context.closePath();
       }
     }
   };
@@ -201,6 +239,17 @@ export class Game {
             shape.positions[i + 1]!.y
           );
         }
+
+        this.context.stroke();
+        this.context.closePath();
+      } else if (shape.type == "diamond") {
+        this.context.beginPath();
+
+        this.context.moveTo(shape.positions[0]!.x, shape.positions[0]!.y);
+        this.context.lineTo(shape.positions[1]!.x, shape.positions[1]!.y);
+        this.context.lineTo(shape.positions[2]!.x, shape.positions[2]!.y);
+        this.context.lineTo(shape.positions[3]!.x, shape.positions[3]!.y);
+        this.context.lineTo(shape.positions[4]!.x, shape.positions[4]!.y);
 
         this.context.stroke();
         this.context.closePath();

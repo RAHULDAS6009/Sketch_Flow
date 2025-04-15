@@ -1,11 +1,17 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { initDraw } from "../draw";
+// import { initDraw } from "../draw";
 import { IconComponent } from "./Icon";
-import { Circle, Pen, RectangleHorizontal } from "lucide-react";
+import { Circle, Pen, RectangleHorizontal, Diamond, LineChartIcon, MinusIcon, ArrowBigLeftDashIcon, ArrowBigRightIcon } from "lucide-react";
 import { Game } from "../draw/Game";
 
-export type Tool = "circle" | "rectangle" | "pencil";
+export type Tool =
+  | "circle"
+  | "rectangle"
+  | "pencil"
+  | "diamond"
+  | "arrow"
+  | "line";
 export const Canvas = ({
   roomId,
   socket,
@@ -34,7 +40,7 @@ export const Canvas = ({
 
   return (
     <div className="w-screen h-screen ">
-      <canvas className="cursor-crosshair" ref={canvasref}></canvas>
+      <canvas width={window.innerWidth} height={window.innerHeight} className="cursor-crosshair" ref={canvasref}></canvas>
       <TopBar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
     </div>
   );
@@ -54,10 +60,29 @@ export const TopBar = ({
         isActivated={selectedTool === "pencil"}
         onClick={() => setSelectedTool("pencil")}
       />
+
       <IconComponent
         icon={<RectangleHorizontal />}
         isActivated={selectedTool === "rectangle"}
         onClick={() => setSelectedTool("rectangle")}
+      />
+
+      <IconComponent
+        icon={<Diamond />}
+        isActivated={selectedTool === "diamond"}
+        onClick={() => setSelectedTool("diamond")}
+      />
+
+      <IconComponent
+        icon={<MinusIcon />}
+        isActivated={selectedTool === "line"}
+        onClick={() => setSelectedTool("line")}
+      />
+
+      <IconComponent
+        icon={<ArrowBigRightIcon />}
+        isActivated={selectedTool === "arrow"}
+        onClick={() => setSelectedTool("arrow")}
       />
 
       <IconComponent
