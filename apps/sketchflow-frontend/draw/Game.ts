@@ -8,14 +8,18 @@ export class Game {
   private context: CanvasRenderingContext2D;
   private startX: number = 0;
   private startY: number = 0;
+  private pencilPositions: { x: number; y: number }[] = [];
   private selectedTool: Tool = "circle";
   private clicked: boolean;
   private existingShapes: Shape[];
-
-  socket: WebSocket;
+  private socket: WebSocket;
 
   constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
     this.canvas = canvas;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     this.context = canvas.getContext("2d")!; //assume it is not null
     this.existingShapes = [];
     this.roomId = roomId;
@@ -40,7 +44,7 @@ export class Game {
 
   async init() {
     this.existingShapes = await getExsisitingShapes(this.roomId);
-    console.log(this.existingShapes);
+
     this.clearCanvas();
   }
 
@@ -64,23 +68,22 @@ export class Game {
   }
 
   mouseDownHandler = (e: MouseEvent) => {
-    console.log("mouse down");
-    console.log(this.context);
+    console.log(this.selectedTool);
 
     this.clicked = true;
     this.startX = e.clientX;
     this.startY = e.clientY;
+
+    if (this.selectedTool === "pencil") {
+      this.pencilPositions = [];
+      this.pencilPositions.push({ x: e.clientX, y: e.clientY });
+    }
   };
 
   mouseUpHandler = (e: MouseEvent) => {
-    console.log("mouse up");
-    console.log(this.context);
-    console.log(this.clicked);
-
     this.clicked = false;
-    const width = e.clientX - this.startX;
-    const height = e.clientY - this.startY;
-    // const radius = Math.max(width, height) / 2;
+    const width = Math.abs(e.clientX - this.startX);
+    const height = Math.abs(e.clientY - this.startY);
     let shape: Shape | null = null;
 
     if (this.selectedTool === "rectangle") {
@@ -98,6 +101,13 @@ export class Game {
         radius: radius,
         centerX: this.startX + radius,
         centerY: this.startY + radius,
+      };
+    } else if (this.selectedTool === "pencil") {
+      this.pencilPositions.push({ x: this.startX, y: this.startY });
+
+      shape = {
+        type: "pencil",
+        positions: this.pencilPositions,
       };
     }
 
@@ -117,16 +127,9 @@ export class Game {
   };
 
   mouseMoveHandler = (e: MouseEvent) => {
-    console.log("mouse move");
-
     if (this.clicked) {
-      console.log("hello");
-      // alert( ' form mouse moveham '+this.context)
-      const width = e.clientX - this.startX;
-      const height = e.clientY - this.startY;
-      this.clearCanvas();
-
-      console.log("from mopuse ", this.context);
+      const width = Math.abs(e.clientX - this.startX);
+      const height = Math.abs(e.clientY - this.startY);
 
       this.context.strokeStyle = "rgba(255,255,255)";
       if (this.selectedTool == "rectangle") {
@@ -139,6 +142,18 @@ export class Game {
         this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         this.context.stroke();
         this.context.closePath();
+      } else if (this.selectedTool === "pencil") {
+        this.context.beginPath();
+        this.context.moveTo(this.startX, this.startY);
+        this.context.lineTo(e.offsetX, e.offsetY);
+        this.context.stroke();
+        this.context.closePath();
+
+        //save the pencil paths
+        this.pencilPositions.push({ x: e.offsetX, y: e.offsetY });
+
+        this.startX = e.offsetX;
+        this.startY = e.offsetY;
       }
     }
   };
@@ -161,6 +176,19 @@ export class Game {
           0,
           2 * Math.PI
         );
+        this.context.stroke();
+        this.context.closePath();
+      } else if (shape.type == "pencil") {
+        this.context.beginPath();
+
+        for (let i = 0; i < shape.positions.length - 1; i++) {
+          this.context.moveTo(shape.positions[i]!.x, shape.positions[i]!.y);
+          this.context.lineTo(
+            shape.positions[i + 1]!.x,
+            shape.positions[i + 1]!.y
+          );
+        }
+
         this.context.stroke();
         this.context.closePath();
       }

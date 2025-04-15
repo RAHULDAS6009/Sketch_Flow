@@ -14,6 +14,9 @@ export type Shape =
       centerX: number;
       centerY: number;
       radius: number;
+    } | {
+      type:"pencil";
+      positions:{x:number,y:number}[]
     };
 
 export async function initDraw(

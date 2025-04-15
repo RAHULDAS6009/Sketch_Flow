@@ -20,7 +20,7 @@ export const Canvas = ({
 
   useEffect(() => {
     shape?.setTool(selectedTool);
-  }, [selectedTool,shape]);
+  }, [selectedTool, shape]);
 
   useEffect(() => {
     if (canvasref.current) {
@@ -28,18 +28,13 @@ export const Canvas = ({
       setShape(newshape);
       return () => {
         newshape.destroy();
-    }
+      };
     }
   }, [canvasref]);
 
   return (
     <div className="w-screen h-screen ">
-      <canvas
-        className="cursor-crosshair"
-        ref={canvasref}
-        width={window.innerWidth}
-        height={window.innerHeight}
-      ></canvas>
+      <canvas className="cursor-crosshair" ref={canvasref}></canvas>
       <TopBar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
     </div>
   );

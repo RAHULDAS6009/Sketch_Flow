@@ -19,7 +19,7 @@ function AuthLayout({ isSignin }: AuthLayoutProps) {
   const [password, setPassword] = useState<string>("");
 
 
-  // TODO:Input Validation
+  // TODO:frontend input validation
   async function onClick() {
     try {
       const userSchema = createUserSchema.safeParse({

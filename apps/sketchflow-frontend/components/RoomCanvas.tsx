@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-// import { useSocket } from "../hooks/useSocket";
 import { WS_URL } from "../config";
 import { Canvas } from "./Canvas";
 
@@ -10,7 +9,7 @@ export const RoomCanvas = ({ roomId }: { roomId: string }) => {
   useEffect(() => {
     const token =
       localStorage.getItem("token") ||
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjYmEzZTFmYi1hMjE0LTQ3NWEtYmQzNy1jYWQ2YWQ4NDQyYjIiLCJpYXQiOjE3NDM4Nzk1NTZ9.Pu_taqyZcLLiBME6vGVTFf_ih4kK-1AR8pJglJr6-nk";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5ZTA2NTVmMy0wNGVjLTQ3NGYtOTdhZS1jZWJhNDQ3Mjg4MDEiLCJpYXQiOjE3NDQ3MDc1Nzl9.Ic-VOXCFbSjtec7reeT6DjMgxwYKLx0ZPy8zfyL87FI";
     const ws = new WebSocket(`${WS_URL}?token=${token}`);
     ws.onopen = () => {
       setSocket(ws);
@@ -22,15 +21,7 @@ export const RoomCanvas = ({ roomId }: { roomId: string }) => {
         })
       );
     };
-    // console.log("here i am 2");
-
-    // const message =
-
-    // console.log(typeof message,message)
-
-    // return ()=>{
-    //   ws.close()
-    // }
+   
   }, []);
   if (!socket) return <div>connecting to server.....</div>;
 
