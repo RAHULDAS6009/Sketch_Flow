@@ -111,6 +111,22 @@ export class Game {
         type: "diamond",
         positions: this.diamondPositions,
       };
+    } else if (this.selectedTool == "line") {
+      shape = {
+        type: "line",
+        startX: this.startX,
+        startY: this.startY,
+        endX: e.clientX,
+        endY: e.clientY,
+      };
+    } else if (this.selectedTool == "arrow") {
+      shape = {
+        type: "arrow",
+        startX: this.startX,
+        startY: this.startY,
+        endX: e.clientX,
+        endY: e.clientY,
+      };
     }
 
     if (!shape) return;
@@ -127,6 +143,36 @@ export class Game {
       })
     );
   };
+
+  canavas_arrow(
+    startx: number,
+    starty: number,
+    endx: number,
+    endy: number,
+    len: number
+  ) {
+    const headlen = len;
+
+    var dx = endx - startx;
+    var dy = endy - starty;
+
+    var angle = Math.atan2(dy, dx);
+
+    this.context.moveTo(startx, starty);
+    this.context.lineTo(endx, endy);
+
+    this.context.moveTo(endx, endy);
+    this.context.lineTo(
+      endx - headlen * Math.cos(angle - Math.PI / 6),
+      endy - headlen * Math.sin(angle - Math.PI / 6)
+    ); //-30 degree
+
+    this.context.moveTo(endx, endy);
+    this.context.lineTo(
+      endx - headlen * Math.cos(angle + Math.PI / 6),
+      endy - headlen * Math.sin(angle + Math.PI / 6)
+    ); //+30 degree
+  }
 
   mouseMoveHandler = (e: MouseEvent) => {
     if (this.clicked) {
@@ -203,6 +249,19 @@ export class Game {
 
         this.context.stroke();
         this.context.closePath();
+      } else if (this.selectedTool == "line") {
+        this.clearCanvas();
+        this.context.beginPath();
+        this.context.moveTo(this.startX, this.startY);
+        this.context.lineTo(e.clientX, e.clientY);
+        this.context.stroke();
+        this.context.closePath();
+      } else if (this.selectedTool == "arrow") {
+        this.clearCanvas();
+        this.context.beginPath();
+        this.canavas_arrow(this.startX, this.startY, e.clientX, e.clientY, 20);
+        this.context.stroke();
+        this.context.closePath();
       }
     }
   };
@@ -251,6 +310,17 @@ export class Game {
         this.context.lineTo(shape.positions[3]!.x, shape.positions[3]!.y);
         this.context.lineTo(shape.positions[4]!.x, shape.positions[4]!.y);
 
+        this.context.stroke();
+        this.context.closePath();
+      } else if (shape.type == "line") {
+        this.context.beginPath();
+        this.context.moveTo(shape.startX, shape.startY);
+        this.context.lineTo(shape.endX, shape.endY);
+        this.context.stroke();
+        this.context.closePath();
+      } else if (shape.type == "arrow") {
+        this.context.beginPath();
+        this.canavas_arrow(shape.startX, shape.startY, shape.endX, shape.endY,20);
         this.context.stroke();
         this.context.closePath();
       }

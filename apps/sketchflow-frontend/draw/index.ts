@@ -23,6 +23,12 @@ export type Shape =
   | {
       type: "diamond";
       positions: { x: number; y: number }[];
+    } | {
+      type:"line" | "arrow";
+      startX:number;
+      startY:number;
+      endX:number;
+      endY:number;
     };
 
 // export async function initDraw(

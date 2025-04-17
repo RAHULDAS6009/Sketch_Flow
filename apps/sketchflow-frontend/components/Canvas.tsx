@@ -2,7 +2,19 @@
 import { useEffect, useRef, useState } from "react";
 // import { initDraw } from "../draw";
 import { IconComponent } from "./Icon";
-import { Circle, Pen, RectangleHorizontal, Diamond, LineChartIcon, MinusIcon, ArrowBigLeftDashIcon, ArrowBigRightIcon } from "lucide-react";
+import {
+  Circle,
+  Pen,
+  RectangleHorizontal,
+  Diamond,
+  LineChartIcon,
+  MinusIcon,
+  ArrowBigLeftDashIcon,
+  ArrowBigRightIcon,
+  Hand,
+  MoveRight,
+  ArrowBigUp,
+} from "lucide-react";
 import { Game } from "../draw/Game";
 
 export type Tool =
@@ -11,7 +23,9 @@ export type Tool =
   | "pencil"
   | "diamond"
   | "arrow"
-  | "line";
+  | "line"
+  | "pan"
+  | "selection";
 export const Canvas = ({
   roomId,
   socket,
@@ -40,7 +54,12 @@ export const Canvas = ({
 
   return (
     <div className="w-screen h-screen ">
-      <canvas width={window.innerWidth} height={window.innerHeight} className="cursor-crosshair" ref={canvasref}></canvas>
+      <canvas
+        width={window.innerWidth}
+        height={window.innerHeight}
+        className="cursor-crosshair"
+        ref={canvasref}
+      ></canvas>
       <TopBar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
     </div>
   );
@@ -80,9 +99,21 @@ export const TopBar = ({
       />
 
       <IconComponent
-        icon={<ArrowBigRightIcon />}
+        icon={<ArrowBigUp />}
+        isActivated={selectedTool === "selection"}
+        onClick={() => setSelectedTool("selection")}
+      />
+
+      <IconComponent
+        icon={<MoveRight />}
         isActivated={selectedTool === "arrow"}
         onClick={() => setSelectedTool("arrow")}
+      />
+
+      <IconComponent
+        icon={<Hand />}
+        isActivated={selectedTool === "pan"}
+        onClick={() => setSelectedTool("pan")}
       />
 
       <IconComponent
