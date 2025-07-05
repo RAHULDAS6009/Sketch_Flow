@@ -28,7 +28,7 @@ const Page = () => {
       
     } catch (error) {
       // TODO:pass the error message in the frontend
-      console.log(" Here is the error :", error);
+      console.log(" exact error :", error);
       alert(error);
     }
   }
